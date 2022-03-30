@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+from __future__ import print_function
 import sys
 import os
 import struct
@@ -125,7 +127,7 @@ def put_file(ws, local_file, remote_file):
     cnt = 0
     with open(local_file, "rb") as f:
         while True:
-            sys.stdout.write("%s sent %d of %d bytes \r" % (remote_file, cnt, sz))
+            sys.stdout.write("Sent %d of %d bytes\r" % (cnt, sz))
             sys.stdout.flush()
             buf = f.read(1024)
             if not buf:
@@ -250,3 +252,7 @@ def main():
         put_file(ws, src_file, dst_file)
 
     s.close()
+
+
+if __name__ == "__main__":
+    main()
