@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 from pathlib import Path
+import webrepl_lib
 
 app = tk.Tk()
 
@@ -34,24 +35,40 @@ def selectNone():
     for fileCheckboxDict in fileCheckboxes:
         fileCheckboxDict['checkboxObj'].deselect()
 
+def openConnection():
+    global webreplObj
+    webreplObj = webrepl_lib.webrepl()
+
+def closeConnection():
+    webreplObj.closeConnection()
+
 def uploadToDevice():
-    pass
+    for fileCheckboxDict in fileCheckboxes:
+        if int(fileCheckboxDict['stateVar'].get()) == 1:
+            webreplObj.sendFile(fileCheckboxDict["filepathObj"])
+    
 
 fileCheckboxes = []
+webreplObj = None
 browseButton = tk.Button(app, text = "Browse", command=askForFile)
 systemDirLabel = tk.Label(app, text="No ESP32 system directory selected")
 fileListFrame = tk.Frame(app)
 selectAllButton = tk.Button(app, text="Select All", command=selectAll)
 selectNoneButton = tk.Button(app, text="Select None", command=selectNone)
+openButton = tk.Button(app, text="Open\nConnection", command=openConnection)
+closeButton = tk.Button(app, text="Close\nConnection", command=closeConnection)
 uploadButton = tk.Button(app, text="Upload to ESP32", command=uploadToDevice)
 
+
 gridOptions = {'sticky':'w'}
-browseButton.grid(row=0, column=0, columnspan=2, **gridOptions)
-systemDirLabel.grid(row=1, column=0, columnspan=2, **gridOptions)
+browseButton.grid(row=0, column=0, columnspan=3, **gridOptions)
+systemDirLabel.grid(row=1, column=0, columnspan=3, **gridOptions)
 selectAllButton.grid(row=2, column=0, **gridOptions)
 selectNoneButton.grid(row=2, column=1, **gridOptions)
-fileListFrame.grid(row=3, column=0, columnspan=2, **gridOptions)
-uploadButton.grid(row=4, column=0, columnspan=2, **gridOptions)
+fileListFrame.grid(row=3, column=0, columnspan=3, **gridOptions)
+openButton.grid(row=4, column=0, **gridOptions)
+closeButton.grid(row=4, column=2, **gridOptions)
+uploadButton.grid(row=4, column=1, **gridOptions)
 
 
 app.mainloop()
