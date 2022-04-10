@@ -15,6 +15,9 @@ def askForFile():
 
 def createFileList(directory):
     global fileCheckboxes
+    for fileCheckbox in fileCheckboxes:
+        fileCheckbox['checkboxObj'].destroy()
+        
     files = os.listdir(directory)
     fileCheckboxes = []#list of dicts {"filepathObj":filepathObj, "checkboxObj":checkboxObj, "stateVar":stateVariableObj}
     gridCounter = 0
